@@ -1,5 +1,6 @@
 .container {
     height: 750px;
+    /* width: 400px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,15 +20,26 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 80%;
     padding: 8px;
     margin-bottom: 10px;
 }
 
-button {
-    width: 100%;
+#loginButton {
+    width: 60%;
     padding: 10px;
     background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#registerButton {
+    width: 60%;
+    padding: 10px;
+    background-color: #c3a9c1;
     color: white;
     border: none;
     border-radius: 5px;

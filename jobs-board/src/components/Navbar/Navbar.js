@@ -10,17 +10,17 @@ const Navbar = () => {
                     <NavLink to="/home" activeStyle>
                         Home
                     </NavLink>
-                    <NavLink to="/about" activeStyle>
-                        About
+                    <NavLink to="/profile" activeStyle>
+                        Profile
                     </NavLink>
                     <NavLink to="/contact" activeStyle>
                         Contact Us
                     </NavLink>
-                    <NavLink to="/blogs" activeStyle>
-                        Blogs
+                    <NavLink to="/articles" activeStyle>
+                        Articles
                     </NavLink>
-                    <NavLink to="/sign-up" activeStyle>
-                        Sign Up
+                    <NavLink to="/login" activeStyle>
+                        Login
                     </NavLink>
                 </NavMenu>
             </Nav>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useState } from "react";
-import '../css/Resume.css';
+import '../css/Login.css';
 import axios from 'axios';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
-function SignUp({ }) {
+function Login({ }) {
     const [formData, setFormData] = useState({ name: "Chin Ling", occupation: "Software engineer", email: "nchinling@gmail.com" });
 
     const [registerMessage, setRegisterMessage] = useState(null);
@@ -21,7 +21,6 @@ function SignUp({ }) {
         try {
             const response = await axios.post(`${URL_API}/create-user-account`, formData);
             setRegisterMessage(response.data.registerMessage);
-            // setRegisterMessage("Account successfully created");
 
             console.log("Received back response: " + response.data.registerMessage);
         } catch (error) {
@@ -43,7 +42,8 @@ function SignUp({ }) {
                 <label htmlFor="email">Email:</label>
                 <input type="text" id="email" name="email" value={formData.email} onChange={handleChange} /><br />
 
-                <button type="submit">Submit</button>
+                <button type="submit" id="loginButton">Login</button>
+                <button type="submit" id="registerButton">Register</button>
 
             </form>
             <p>{registerMessage}</p>
@@ -52,5 +52,5 @@ function SignUp({ }) {
     );
 }
 
-export default SignUp;
+export default Login;
 

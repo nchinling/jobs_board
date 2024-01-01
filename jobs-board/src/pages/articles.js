@@ -1,12 +1,12 @@
 import React from 'react';
 import '../css/Page.css';
 
-const Home = () => {
+const Articles = () => {
 	return (
 		<div className="pageMargin">
-			<h1>Welcome to Jobs AI, a portal for job seekers.</h1>
+			<h1>New articles will be provided periodically</h1>
 		</div>
 	);
 };
 
-export default Home;
+export default Articles;
