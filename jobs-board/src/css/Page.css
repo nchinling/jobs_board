@@ -1,3 +1,27 @@
 .pageMargin {
     margin: 20px;
 }
+
+.page-header {
+    /* Add any existing styles for page-header if needed */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.progress-bar {
+    width: 200px;
+    /* Adjust the width as needed */
+    height: 10px;
+    /* Adjust the height as needed */
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4caf50;
+    /* Adjust the color as needed */
+    border-radius: 5px;
+}

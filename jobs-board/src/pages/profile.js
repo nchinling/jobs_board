@@ -1,17 +1,209 @@
-import React from "react";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import '../css/Page.css';
+import axios from 'axios';
 
-const Profile = () => {
+const URL_API = 'http://localhost:8000/api/jobs_board';
+
+function Profile() {
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const pages = [
+        { fields: ['firstName', 'lastName'], label: 'Personal Information' },
+        { fields: ['email', 'phoneNumber'], label: 'Contact' },
+        { fields: ['country', 'streetAddress', 'city', 'postCode'], label: 'Where are you located?' },
+        {
+            fields: ['levelOfEducation', 'fieldOfStudy', 'schoolName', 'country', 'fromDate', 'toDate'],
+            label: 'Add Education'
+        },
+        { fields: ['occupation'], label: 'Occupation' },
+    ];
+
+    const [formData, setFormData] = useState({
+        firstName: "Chin Ling",
+        lastName: "Ng",
+        email: "nchinling@gmail.com",
+        phoneNumber: "94892015",
+        country: "Singapore",
+        streetAddress: "86 Dawson Road",
+        city: "Singapore",
+        postCode: "141086",
+        levelOfEducation: "",
+        fieldOfStudy: "",
+        schoolName: "",
+        fromDate: null,
+        toDate: null,
+        occupation: "Software engineer",
+    });
+
+    const [educationEntries, setEducationEntries] = useState([
+        {
+            levelOfEducation: "",
+            fieldOfStudy: "",
+            schoolName: "",
+            country: "",
+            fromDate: null,
+            toDate: null,
+        },
+    ]);
+
+    const [registerMessage, setRegisterMessage] = useState(null);
+
+    const handleChange = (event, entryIndex, fieldIndex) => {
+        const { name, value } = event.target;
+        const updatedEducationEntries = [...educationEntries];
+        updatedEducationEntries[entryIndex] = {
+            ...updatedEducationEntries[entryIndex],
+            [name]: value,
+        };
+        setEducationEntries(updatedEducationEntries);
+    };
+
+    const handleDateChange = (date, fieldName, entryIndex) => {
+        const updatedEducationEntries = [...educationEntries];
+        updatedEducationEntries[entryIndex] = {
+            ...updatedEducationEntries[entryIndex],
+            [fieldName]: date,
+        };
+        setEducationEntries(updatedEducationEntries);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post(`${URL_API}/create-user-account`, {
+                ...formData,
+                educationEntries,
+            });
+            setRegisterMessage(response.data.registerMessage);
+
+            console.log("Received back response: " + response.data.registerMessage);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const goToNextPage = () => {
+        setCurrentPage((prevPage) => Math.min(prevPage + 1, pages.length));
+    };
+
+    const goToPreviousPage = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+
+    const addEducationEntry = () => {
+        setEducationEntries((prevEntries) => [
+            ...prevEntries,
+            {
+                levelOfEducation: "",
+                fieldOfStudy: "",
+                schoolName: "",
+                country: "",
+                fromDate: null,
+                toDate: null,
+            },
+        ]);
+    };
+
+    const formatLabel = (fieldName) => {
+        return fieldName.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
+    };
+
     return (
-        <div className="pageMargin">
-            <h1>
-                Create your resume here for easy job applications.
-            </h1>
-            <h2>
-                Post your resume - and start applying for jobs today!
-            </h2>
+        <div className="container" style={{ height: "750px" }}>
+            <div className="page-header">
+                <h3>Page {currentPage} of {pages.length}</h3>
+                <div className="progress-bar">
+                    <div
+                        className="progress"
+                        style={{ width: `${(currentPage / pages.length) * 100}%` }}
+                    ></div>
+                </div>
+            </div>
+
+            <form>
+                {pages.map((page, pageIndex) => (
+                    pageIndex + 1 === currentPage && (
+                        <div key={pageIndex}>
+                            <h2>{page.label}</h2>
+
+                            {educationEntries.map((entry, entryIndex) => (
+                                <div key={`${pageIndex}-${entryIndex}`}>
+                                    <h3>Education {entryIndex + 1}</h3>
+                                    {page.fields.map((field) => (
+                                        <div key={field}>
+                                            {field === "fromDate" || field === "toDate" ? (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <DatePicker
+                                                        selected={entry[field]}
+                                                        onChange={(date) =>
+                                                            handleDateChange(date, field, entryIndex)
+                                                        }
+                                                        dateFormat="MM/yyyy"
+                                                        showMonthYearPicker
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id={field}
+                                                        name={field}
+                                                        value={entry[field]}
+                                                        onChange={(event) =>
+                                                            handleChange(event, entryIndex, pageIndex)
+                                                        }
+                                                    />
+                                                    <br />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                            {page.label === "Add Education" && (
+                                <button
+                                    type="button"
+                                    onClick={addEducationEntry}
+                                >
+                                    Add another education
+                                </button>
+                            )}
+                        </div>
+                    )
+                ))}
+                <button
+                    type="button"
+                    onClick={goToPreviousPage}
+                    disabled={currentPage === 1}
+                >
+                    Previous
+                </button>
+                {currentPage < pages.length ? (
+                    <button type="button" onClick={goToNextPage}>
+                        Next
+                    </button>
+                ) : (
+                    <button
+                        type="button"
+                        onClick={handleSubmit}
+                        id="registerButton"
+                    >
+                        Register
+                    </button>
+                )}
+            </form>
+            <p>{registerMessage}</p>
         </div>
     );
-};
+}
 
 export default Profile;

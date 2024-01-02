@@ -16,7 +16,7 @@ def create_user_account(request):
             print(f'Form data received: {form_data}')
 
             # Form data
-            name = form_data['name']
+            lastName = form_data['lastName']
 
             response_data = {'registerMessage': "Account has been created"}
 

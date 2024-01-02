@@ -37,6 +37,7 @@ input {
 }
 
 #registerButton {
+    margin-top: 10px;
     width: 60%;
     padding: 10px;
     background-color: #c3a9c1;
