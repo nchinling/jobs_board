@@ -21,7 +21,6 @@ function Profile() {
             fields: ['jobTitle', 'company', 'country', 'fromDate', 'toDate', 'description'],
             label: 'Add Work Experience'
         },
-
     ];
 
     const [formData, setFormData] = useState({
@@ -44,7 +43,6 @@ function Profile() {
         fromDate: null,
         toDate: null,
         description: ""
-
     });
 
     const [educationEntries, setEducationEntries] = useState([
@@ -71,39 +69,27 @@ function Profile() {
 
     const [registerMessage, setRegisterMessage] = useState(null);
 
-    const handleChange = (event, entryIndex, fieldIndex) => {
+    const handleChange = (event, entryIndex, isEducation) => {
         const { name, value } = event.target;
-        const updatedEducationEntries = [...educationEntries];
-        updatedEducationEntries[entryIndex] = {
-            ...updatedEducationEntries[entryIndex],
+        const updatedEntries = isEducation ? [...educationEntries] : [...workEntries];
+
+        updatedEntries[entryIndex] = {
+            ...updatedEntries[entryIndex],
             [name]: value,
         };
-        setEducationEntries(updatedEducationEntries);
 
-        const updatedWorkEntries = [...workEntries];
-        updatedWorkEntries[entryIndex] = {
-            ...updatedWorkEntries[entryIndex],
-            [name]: value,
-        };
-        setWorkEntries(updatedWorkEntries);
+        isEducation ? setEducationEntries(updatedEntries) : setWorkEntries(updatedEntries);
     };
 
-    const handleEducationDateChange = (date, fieldName, entryIndex) => {
-        const updatedEducationEntries = [...educationEntries];
-        updatedEducationEntries[entryIndex] = {
-            ...updatedEducationEntries[entryIndex],
-            [fieldName]: date,
-        };
-        setEducationEntries(updatedEducationEntries);
-    };
+    const handleDateChange = (date, fieldName, entryIndex, isEducation) => {
+        const updatedEntries = isEducation ? [...educationEntries] : [...workEntries];
 
-    const handleWorkDateChange = (date, fieldName, entryIndex) => {
-        const updatedWorkEntries = [...workEntries];
-        updatedWorkEntries[entryIndex] = {
-            ...updatedWorkEntries[entryIndex],
+        updatedEntries[entryIndex] = {
+            ...updatedEntries[entryIndex],
             [fieldName]: date,
         };
-        setWorkEntries(updatedWorkEntries);
+
+        isEducation ? setEducationEntries(updatedEntries) : setWorkEntries(updatedEntries);
     };
 
     const handleSubmit = async (event) => {
@@ -113,6 +99,7 @@ function Profile() {
             const response = await axios.post(`${URL_API}/create-user-account`, {
                 ...formData,
                 educationEntries,
+                workEntries,
             });
             setRegisterMessage(response.data.registerMessage);
 
@@ -130,18 +117,32 @@ function Profile() {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
 
-    const addEducationEntry = () => {
-        setEducationEntries((prevEntries) => [
-            ...prevEntries,
-            {
-                levelOfEducation: "",
-                fieldOfStudy: "",
-                schoolName: "",
-                country: "",
-                fromDate: null,
-                toDate: null,
-            },
-        ]);
+    const addEntry = (isEducation) => {
+        if (isEducation) {
+            setEducationEntries((prevEntries) => [
+                ...prevEntries,
+                {
+                    levelOfEducation: "",
+                    fieldOfStudy: "",
+                    schoolName: "",
+                    country: "",
+                    fromDate: null,
+                    toDate: null,
+                },
+            ]);
+        } else {
+            setWorkEntries((prevEntries) => [
+                ...prevEntries,
+                {
+                    jobTitle: "",
+                    company: "",
+                    country: "",
+                    fromDate: null,
+                    toDate: null,
+                    description: ""
+                },
+            ]);
+        }
     };
 
     const formatLabel = (fieldName) => {
@@ -166,9 +167,8 @@ function Profile() {
                         <div key={pageIndex}>
                             <h2>{page.label}</h2>
 
-                            {educationEntries.map((entry, entryIndex) => (
+                            {(page.label === "Add Education" ? educationEntries : workEntries).map((entry, entryIndex) => (
                                 <div key={`${pageIndex}-${entryIndex}`}>
-
                                     {page.fields.map((field) => (
                                         <div key={field}>
                                             {field === "fromDate" || field === "toDate" ? (
@@ -179,7 +179,7 @@ function Profile() {
                                                     <DatePicker
                                                         selected={entry[field]}
                                                         onChange={(date) =>
-                                                            handleEducationDateChange(date, field, entryIndex)
+                                                            handleDateChange(date, field, entryIndex, page.label === "Add Education")
                                                         }
                                                         dateFormat="MMM yyyy"
                                                         showMonthYearPicker
@@ -196,7 +196,7 @@ function Profile() {
                                                         name={field}
                                                         value={entry[field]}
                                                         onChange={(event) =>
-                                                            handleChange(event, entryIndex, pageIndex)
+                                                            handleChange(event, entryIndex, page.label === "Add Education")
                                                         }
                                                     />
                                                     <br />
@@ -206,17 +206,28 @@ function Profile() {
                                     ))}
                                 </div>
                             ))}
+
                             {page.label === "Add Education" && (
                                 <button
                                     type="button"
-                                    onClick={addEducationEntry}
-                                >
+                                    onClick={() => addEntry(true)}
+                                    className="addButton">
                                     Add another education
+                                </button>
+                            )}
+
+                            {page.label === "Add Work Experience" && (
+                                <button
+                                    type="button"
+                                    onClick={() => addEntry(false)}
+                                    className="addButton">
+                                    Add another work experience
                                 </button>
                             )}
                         </div>
                     )
                 ))}
+
                 <button
                     type="button"
                     onClick={goToPreviousPage}

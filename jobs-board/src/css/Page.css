@@ -49,3 +49,19 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+.addButton {
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 40%;
+    padding: 10px;
+    background-color: #ba783b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a0454e;
+}
