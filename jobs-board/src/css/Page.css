@@ -25,3 +25,27 @@
     /* Adjust the color as needed */
     border-radius: 5px;
 }
+
+.registerResumeButton {
+    margin-top: 10px;
+    width: 60%;
+    padding: 10px;
+    background-color: #e112cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.previousNextButtons {
+    margin-top: 10px;
+    margin-right: 10px;
+    width: 20%;
+    padding: 10px;
+    background-color: #3ba0ba;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
