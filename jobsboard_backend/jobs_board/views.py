@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @csrf_exempt
-def create_user_account(request):
+def create_resume(request):
     if request.method == 'POST':
         try:
             form_data = json.loads(request.body)
@@ -18,7 +18,7 @@ def create_user_account(request):
             # Form data
             lastName = form_data['lastName']
 
-            response_data = {'registerMessage': "Account has been created"}
+            response_data = {'registerMessage': "Resume successfully created"}
 
             return JsonResponse(response_data)
 

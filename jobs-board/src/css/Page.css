@@ -65,3 +65,10 @@
 button:hover {
     background-color: #a0454e;
 }
+
+
+.descriptionTextArea textarea {
+    width: 100%;
+    box-sizing: border-box;
+    /* Include padding and border in textarea width */
+}
