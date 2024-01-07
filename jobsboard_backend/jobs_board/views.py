@@ -3,6 +3,7 @@ from django.http import JsonResponse
 import json
 from django.middleware.csrf import get_token
 import math
+from .models import UserResume
 from scipy.stats import norm
 from django.views.decorators.csrf import csrf_exempt
 
@@ -15,6 +16,8 @@ def create_resume(request):
 
             print(f'Form data received: {form_data}')
 
+            # profile = UserResume(**form_data)
+            # profile.save()
             # Form data
             lastName = form_data['lastName']
 
