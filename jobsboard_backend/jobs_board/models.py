@@ -2,6 +2,7 @@ from django.db import models
 import json
 import datetime
 from django.utils import timezone
+from django.db.models import Prefetch
 
 
 class Resume(models.Model):

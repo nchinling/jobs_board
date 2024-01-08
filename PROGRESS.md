@@ -21,6 +21,8 @@
 - created user resume 
 - stored in db
 - returned all resumes
+- css for all resumes
+- Jobs logo text
 
 
 ## To do

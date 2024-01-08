@@ -72,3 +72,70 @@ button:hover {
     box-sizing: border-box;
     /* Include padding and border in textarea width */
 }
+
+.ResumeContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: black;
+}
+
+.ResumeContainer p {
+    color: black
+}
+
+.ResumeH1 {
+    /* color: #9d0a0a; */
+}
+
+.ResumeUl {
+    list-style: none;
+    padding: 50px;
+    background-color: white;
+    border-radius: 10px;
+    border-color: #df2e2e;
+    border: 2px solid #ea4444;
+    margin-bottom: 20px;
+    /* Add rounded corners to the list */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Add a subtle box shadow */
+
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.03);
+        /* Enlarge the list item on hover */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* Add a slightly larger shadow on hover */
+    }
+}
+
+.ResumeLi {
+    list-style-type: square;
+    margin-bottom: 20px;
+    /* border: 1px solid #ddd; */
+    border: 1px solid rgb(12, 123, 133);
+    padding: 25px;
+    border-radius: 8px;
+    background-color: #ffffff;
+}
+
+.ResumeH2 {
+    color: #df2e2e;
+}
+
+.ResumeH3 {}
+
+.ResumeP {
+    margin: 8px 0;
+
+}
+
+ul ul {
+    margin-top: 10px;
+}
+
+li:hover {
+    /* background-color: #af1616;
+    transition: background-color 0.3s ease; */
+}
