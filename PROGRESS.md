@@ -14,8 +14,14 @@
 - fix duplicate when 'add work experience' is created
 
 # 7 Jan
-- created user resume class
+- created user resume class (not working entirely)
 - created Django admin
+
+# 8 Jan
+- created user resume 
+- stored in db
+- returned all resumes
+
 
 ## To do
 - debug json sent to python

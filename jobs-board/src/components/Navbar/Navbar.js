@@ -13,8 +13,8 @@ const Navbar = () => {
                     <NavLink to="/profile" activeStyle>
                         Profile
                     </NavLink>
-                    <NavLink to="/contact" activeStyle>
-                        Contact Us
+                    <NavLink to="/allresumes" activeStyle>
+                        All Resumes
                     </NavLink>
                     <NavLink to="/articles" activeStyle>
                         Articles

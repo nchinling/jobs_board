@@ -25,60 +25,60 @@ function Profile() {
     ];
 
     const [formData, setFormData] = useState({
-        firstName: "Chin Ling",
+        firstName: "Chin Lings",
         lastName: "Ng",
         email: "nchinling@gmail.com",
         phoneNumber: "94892015",
         country: "Singapore",
         streetAddress: "86 Dawson Road",
         city: "Singapore",
-        postCode: "141086",
-        levelOfEducation: "",
-        fieldOfStudy: "",
-        schoolName: "",
-        countryOfStudy: "",
-        studiedFrom: null,
-        studiedUntil: null,
-        jobTitle: "",
-        company: "",
-        countryOfWork: "",
-        workedFrom: null,
-        workedUntil: null,
-        description: ""
+        postCode: "141085",
+        // levelOfEducation: "",
+        // fieldOfStudy: "",
+        // schoolName: "",
+        // countryOfStudy: "",
+        // studiedFrom: null,
+        // studiedUntil: null,
+        // jobTitle: "",
+        // company: "",
+        // countryOfWork: "",
+        // workedFrom: null,
+        // workedUntil: null,
+        // description: ""
 
     });
 
 
     const [personalInformation, setPersonalInformation] = useState([
         {
-            firstName: "",
-            lastName: "",
+            firstName: "Chin Lingz",
+            lastName: "Ng",
         },
     ]);
 
 
     const [contact, setContact] = useState([
         {
-            email: "",
-            phoneNumber: "",
+            email: "nchinling@gmail.com",
+            phoneNumber: "94892015",
         },
     ]);
 
     const [address, setAddress] = useState([
         {
-            country: "",
-            streetAddress: "",
-            city: "",
-            postCode: "",
+            country: "Singapore",
+            streetAddress: "86 Dawson Road",
+            city: "Singapore",
+            postCode: "141086",
         },
     ]);
 
     const [educationEntries, setEducationEntries] = useState([
         {
-            levelOfEducation: "",
-            fieldOfStudy: "",
-            schoolName: "",
-            countryOfStudy: "",
+            levelOfEducation: "Masters",
+            fieldOfStudy: "Engineering",
+            schoolName: "Harvard",
+            countryOfStudy: "USA",
             studiedFrom: null,
             studiedUntil: null,
         },
@@ -86,55 +86,115 @@ function Profile() {
 
     const [workEntries, setWorkEntries] = useState([
         {
-            jobTitle: "",
-            company: "",
-            countryOfWork: "",
+            jobTitle: "Lead Architect",
+            company: "Google",
+            countryOfWork: "Singapore",
             workedFrom: null,
             workedUntil: null,
-            description: ""
+            description: "Program"
         },
     ]);
 
     const [registerMessage, setRegisterMessage] = useState(null);
 
-    const handleChange = (event, entryIndex, fieldIndex) => {
+    // const handleChange = (event, entryIndex, fieldIndex) => {
+    //     const { name, value } = event.target;
+    //     // const updatedFormData = [...formData];
+    //     // updatedFormData[entryIndex] = {
+    //     //     ...updatedFormData[entryIndex],
+    //     //     [name]: value,
+    //     // };
+    //     // setFormData(updatedFormData);
+
+    //     const updatedAddress = [...address];
+    //     updatedAddress[entryIndex] = {
+    //         ...updatedAddress[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setAddress(updatedAddress);
+
+    //     const updatedContact = [...contact];
+    //     updatedContact[entryIndex] = {
+    //         ...updatedContact[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setContact(updatedContact);
+
+    //     const updatedPersonalInformation = [...personalInformation];
+    //     updatedPersonalInformation[entryIndex] = {
+    //         ...updatedPersonalInformation[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setPersonalInformation(updatedPersonalInformation);
+
+
+    //     const updatedEducationEntries = [...educationEntries];
+    //     updatedEducationEntries[entryIndex] = {
+    //         ...updatedEducationEntries[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setEducationEntries(updatedEducationEntries);
+
+    //     const updatedWorkEntries = [...workEntries];
+    //     updatedWorkEntries[entryIndex] = {
+    //         ...updatedWorkEntries[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setWorkEntries(updatedWorkEntries);
+    // };
+
+    const handleChange = (event, entryIndex, pageIndex) => {
         const { name, value } = event.target;
-        const updatedAddress = [...address];
-        updatedAddress[entryIndex] = {
-            ...updatedAddress[entryIndex],
-            [name]: value,
-        };
-        setAddress(updatedAddress);
+        const [section, field] = name.split('-'); // Split the name into section and field
 
-        const updatedContact = [...contact];
-        updatedContact[entryIndex] = {
-            ...updatedContact[entryIndex],
-            [name]: value,
-        };
-        setContact(updatedContact);
+        // Update the state based on the section
+        switch (section) {
+            case 'personalInformation':
+                const updatedPersonalInformation = [...personalInformation];
+                updatedPersonalInformation[entryIndex] = {
+                    ...updatedPersonalInformation[entryIndex],
+                    [field]: value,
+                };
+                setPersonalInformation(updatedPersonalInformation);
+                break;
+            case 'address':
+                const updatedAddress = [...address];
+                updatedAddress[entryIndex] = {
+                    ...updatedAddress[entryIndex],
+                    [field]: value,
+                };
+                setAddress(updatedAddress);
+                break;
+            case 'contact':
+                const updatedContact = [...contact];
+                updatedContact[entryIndex] = {
+                    ...updatedContact[entryIndex],
+                    [field]: value,
+                };
+                setContact(updatedContact);
+                break;
+            case 'educationEntries':
+                const updatedEducationEntries = [...educationEntries];
+                updatedEducationEntries[entryIndex] = {
+                    ...updatedEducationEntries[entryIndex],
+                    [field]: value,
+                };
+                setEducationEntries(updatedEducationEntries);
+                break;
+            case 'workEntries':
+                const updatedWorkEntries = [...workEntries];
+                updatedWorkEntries[entryIndex] = {
+                    ...updatedWorkEntries[entryIndex],
+                    [field]: value,
+                };
+                setWorkEntries(updatedWorkEntries);
+                break;
+            default:
 
-        const updatedPersonalInformation = [...personalInformation];
-        updatedPersonalInformation[entryIndex] = {
-            ...updatedPersonalInformation[entryIndex],
-            [name]: value,
-        };
-        setPersonalInformation(updatedPersonalInformation);
-
-
-        const updatedEducationEntries = [...educationEntries];
-        updatedEducationEntries[entryIndex] = {
-            ...updatedEducationEntries[entryIndex],
-            [name]: value,
-        };
-        setEducationEntries(updatedEducationEntries);
-
-        const updatedWorkEntries = [...workEntries];
-        updatedWorkEntries[entryIndex] = {
-            ...updatedWorkEntries[entryIndex],
-            [name]: value,
-        };
-        setWorkEntries(updatedWorkEntries);
+                break;
+        }
     };
+
 
     const handleEducationDateChange = (date, fieldName, entryIndex) => {
         const updatedEducationEntries = [...educationEntries];
@@ -161,8 +221,12 @@ function Profile() {
 
         try {
             const response = await axios.post(`${URL_API}/create_resume`, {
-                ...formData,
+                // ...formData,
+                personalInformation,
+                contact,
+                address,
                 educationEntries,
+                workEntries
             });
             setRegisterMessage(response.data.registerMessage);
 
@@ -187,9 +251,9 @@ function Profile() {
                 levelOfEducation: "",
                 fieldOfStudy: "",
                 schoolName: "",
-                country: "",
-                fromDate: null,
-                toDate: null,
+                countryOfStudy: "",
+                studiedFrom: null,
+                studiedUntil: null,
             },
         ]);
     };
@@ -200,9 +264,9 @@ function Profile() {
             {
                 jobTitle: "",
                 company: "",
-                country: "",
-                fromDate: null,
-                toDate: null,
+                countryOfWork: "Singapore",
+                workedFrom: null,
+                workedUntil: null,
                 description: ""
             },
         ]);
@@ -243,7 +307,7 @@ function Profile() {
                                                 <input
                                                     type="text"
                                                     id={field}
-                                                    name={field}
+                                                    name={`address-${field}`}
                                                     value={entry[field]}
                                                     onChange={(event) =>
                                                         handleChange(event, entryIndex, pageIndex)
@@ -271,7 +335,7 @@ function Profile() {
                                                 <input
                                                     type="text"
                                                     id={field}
-                                                    name={field}
+                                                    name={`contact-${field}`}
                                                     value={entry[field]}
                                                     onChange={(event) =>
                                                         handleChange(event, entryIndex, pageIndex)
@@ -297,7 +361,8 @@ function Profile() {
                                                 <input
                                                     type="text"
                                                     id={field}
-                                                    name={field}
+                                                    // name={field}
+                                                    name={`personalInformation-${field}`}
                                                     value={entry[field]}
                                                     onChange={(event) =>
                                                         handleChange(event, entryIndex, pageIndex)
@@ -340,7 +405,7 @@ function Profile() {
                                                     <input
                                                         type="text"
                                                         id={field}
-                                                        name={field}
+                                                        name={`educationEntries-${field}`}
                                                         value={entry[field]}
                                                         onChange={(event) =>
                                                             handleChange(event, entryIndex, pageIndex)
@@ -375,6 +440,21 @@ function Profile() {
                                                         showMonthYearPicker
                                                     />
                                                 </div>
+                                            ) : field === "description" ? (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <textarea
+                                                        id={field}
+                                                        name={`workEntries-${field}`}
+                                                        value={entry[field]}
+                                                        onChange={(event) =>
+                                                            handleChange(event, entryIndex, pageIndex)
+                                                        }
+                                                    />
+                                                    <br />
+                                                </div>
                                             ) : (
                                                 <div>
                                                     <label htmlFor={field}>
@@ -383,7 +463,7 @@ function Profile() {
                                                     <input
                                                         type="text"
                                                         id={field}
-                                                        name={field}
+                                                        name={`workEntries-${field}`}
                                                         value={entry[field]}
                                                         onChange={(event) =>
                                                             handleChange(event, entryIndex, pageIndex)
@@ -396,6 +476,49 @@ function Profile() {
                                     ))}
                                 </div>
                             ))}
+
+                            {/* {page.label === "Add Work Experience" && workEntries.map((entry, entryIndex) => (
+                                <div key={`${pageIndex}-${entryIndex}`}>
+                                    <h3>Work{entryIndex + 1}</h3>
+
+                                    {page.fields.map((field) => (
+                                        <div key={field}>
+                                            {field === "workedFrom" || field === "workedUntil" ? (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <DatePicker
+                                                        selected={entry[field]}
+                                                        onChange={(date) =>
+                                                            handleWorkDateChange(date, field, entryIndex)
+                                                        }
+                                                        dateFormat="MMM yyyy"
+                                                        showMonthYearPicker
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id={field}
+                                                        // name={field}
+                                                        name={`workEntries-${field}`}
+                                                        value={entry[field]}
+                                                        onChange={(event) =>
+                                                            handleChange(event, entryIndex, pageIndex)
+                                                        }
+                                                    />
+                                                    <br />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ))} */}
                             {page.label === "Add Education" && (
                                 <button
                                     type="button"
