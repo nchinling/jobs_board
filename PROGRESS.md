@@ -24,8 +24,11 @@
 - css for all resumes
 - Jobs logo text
 
+# 14 Feb
+- created jobs form
+- created list all jobs
+
 
 ## To do
-- debug json sent to python
-- create database
+- create model for jobs in backend
 - create Google sign in

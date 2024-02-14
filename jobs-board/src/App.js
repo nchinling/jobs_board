@@ -8,7 +8,9 @@ import Home from './pages/home';
 import Profile from './pages/profile';
 import Articles from './pages/articles';
 import Login from './pages/login';
+import PostJob from './pages/postjobs';
 import AllResumes from './pages/allresumes';
+import AllJobs from './pages/alljobs';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route exact path='/home' element={<Home />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/allresumes' element={<AllResumes />} />
+        <Route path='/postjob' element={<PostJob />} />
+        <Route path='/alljobs' element={<AllJobs />} />
         <Route path='/articles' element={<Articles />} />
         <Route path='/login' element={<Login />} />
       </Routes>

@@ -16,6 +16,9 @@ const Navbar = () => {
                     <NavLink to="/profile" activeStyle>
                         Profile
                     </NavLink>
+                    <NavLink to="/postjob" activeStyle>
+                        Post Job
+                    </NavLink>
                     <NavLink to="/allresumes" activeStyle>
                         All Resumes
                     </NavLink>

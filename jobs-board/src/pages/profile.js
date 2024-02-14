@@ -24,29 +24,16 @@ function Profile() {
 
     ];
 
-    const [formData, setFormData] = useState({
-        firstName: "Chin Lings",
-        lastName: "Ng",
-        email: "nchinling@gmail.com",
-        phoneNumber: "94892015",
-        country: "Singapore",
-        streetAddress: "86 Dawson Road",
-        city: "Singapore",
-        postCode: "141085",
-        // levelOfEducation: "",
-        // fieldOfStudy: "",
-        // schoolName: "",
-        // countryOfStudy: "",
-        // studiedFrom: null,
-        // studiedUntil: null,
-        // jobTitle: "",
-        // company: "",
-        // countryOfWork: "",
-        // workedFrom: null,
-        // workedUntil: null,
-        // description: ""
-
-    });
+    // const [formData, setFormData] = useState({
+    //     firstName: "Chin Lings",
+    //     lastName: "Ng",
+    //     email: "nchinling@gmail.com",
+    //     phoneNumber: "94892015",
+    //     country: "Singapore",
+    //     streetAddress: "86 Dawson Road",
+    //     city: "Singapore",
+    //     postCode: "141085",
+    // });
 
 
     const [personalInformation, setPersonalInformation] = useState([
