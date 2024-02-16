@@ -2,7 +2,7 @@ import React from "react";
 import { Nav, NavLink, NavMenu, Title }
     from "./NavbarElements";
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn }) => {
     return (
         <>
             <Nav>
@@ -16,18 +16,42 @@ const Navbar = () => {
                     <NavLink to="/profile" activeStyle>
                         Profile
                     </NavLink>
-                    <NavLink to="/postjob" activeStyle>
+                    {isLoggedIn && (
+                        <>
+                            <NavLink to="/postjob" activeStyle>
+                                Post Job
+                            </NavLink>
+                            <NavLink to="/allresumes" activeStyle>
+                                All Resumes
+                            </NavLink>
+                        </>
+                    )}
+                    {/* <NavLink to="/postjob" activeStyle>
                         Post Job
                     </NavLink>
                     <NavLink to="/allresumes" activeStyle>
                         All Resumes
-                    </NavLink>
+                    </NavLink> */}
                     <NavLink to="/articles" activeStyle>
                         Articles
                     </NavLink>
-                    <NavLink to="/login" activeStyle>
+                    {!isLoggedIn && (
+                        <>
+                            <NavLink to="/login" activeStyle>
+                                Login
+                            </NavLink>
+                            <NavLink to="/register" activeStyle>
+                                Register
+                            </NavLink>
+                        </>
+                    )}
+                    {/* <NavLink to="/login" activeStyle>
                         Login
                     </NavLink>
+                    <NavLink to="/register" activeStyle>
+                        Register
+                    </NavLink> */}
+
                 </NavMenu>
             </Nav>
         </>

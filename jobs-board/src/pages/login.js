@@ -1,14 +1,19 @@
 import React from 'react';
 import { useState } from "react";
 import '../css/Button.css';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
-function Login({ }) {
-    const [formData, setFormData] = useState({ name: "Chin Ling", occupation: "Software engineer", email: "nchinling@gmail.com" });
+const Login = ({ onLogin }) => {
+    const [formData, setFormData] = useState({ email: "nchinling@gmail.com", password: "84010910" });
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loginMessage, setLoginMessage] = useState(null);
 
-    const [registerMessage, setRegisterMessage] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -19,10 +24,16 @@ function Login({ }) {
         event.preventDefault();
 
         try {
-            const response = await axios.post(`${URL_API}/create-user-account`, formData);
-            setRegisterMessage(response.data.registerMessage);
+            const response = await axios.post(`${URL_API}/login-account`, formData);
+            setLoginMessage(response.data.loginMessage);
+            console.log("Received back response: " + response.data.loginMessage);
+            onLogin();
+            if (response.data.loginMessage === 'Login successful') {
+                // setIsLoggedIn(true);
+                navigate('/');
+            }
 
-            console.log("Received back response: " + response.data.registerMessage);
+
         } catch (error) {
             console.error(error);
         }
@@ -33,20 +44,16 @@ function Login({ }) {
 
             <form onSubmit={handleSubmit}>
 
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} /><br />
-
-                <label htmlFor="occupation">Occupation:</label>
-                <input type="text" id="occupation" name="occupation" value={formData.occupation} onChange={handleChange} /><br />
-
                 <label htmlFor="email">Email:</label>
                 <input type="text" id="email" name="email" value={formData.email} onChange={handleChange} /><br />
 
+                <label htmlFor="email">Password:</label>
+                <input type="text" id="password" name="password" value={formData.password} onChange={handleChange} /><br />
+
                 <button type="submit" id="loginButton">Login</button>
-                <button type="submit" id="registerButton">Register</button>
 
             </form>
-            <p>{registerMessage}</p>
+            <p>{loginMessage}</p>
 
         </div>
     );

@@ -1,14 +1,32 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 import json
-from django.middleware.csrf import get_token
 import math
-from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry
-from scipy.stats import norm
+from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry, User
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.db.models import Prefetch
-# from datetime import date, datetime
+from django.contrib.auth.hashers import make_password, check_password
+
+
+@csrf_exempt
+def login(request):
+    try:
+        form_data = json.loads(request.body)
+        user_email = form_data.get('email')
+        user_password = form_data.get('password')
+        user = User.objects.get(email=user_email)
+        password_matches = check_password(user_password, user.password)
+        if password_matches:
+            response_data = {'loginMessage': "Login successful"}
+            return JsonResponse(response_data)
+        else:
+            # return JsonResponse({'loginMessage': 'Incorrect password'}, status=400)
+            response_data = {'loginMessage': "Incorrect password"}
+            return JsonResponse(response_data)
+    except User.DoesNotExist:
+        # Handle user not found
+        # Return some response indicating the user doesn't exist, e.g., return a JSON response
+        return JsonResponse({'loginMessage': 'Account not found'})
 
 
 @csrf_exempt
@@ -36,6 +54,29 @@ def create_resume(request):
             WorkEntry.objects.create(resume=resume, **work_entry)
 
         response_data = {'registerMessage': "Resume successfully created"}
+        return JsonResponse(response_data)
+    except json.JSONDecodeError as e:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        transaction.rollback(True)
+        return JsonResponse({'error': str(e)}, status=400)
+
+
+@csrf_exempt
+@transaction.atomic
+def create_user_account(request):
+    try:
+        form_data = json.loads(request.body)
+
+        # Create User
+        user = User.objects.create(
+            name=form_data.get('name'),
+            email=form_data.get('email'),
+            password=make_password(form_data.get('password')),
+            register_type=form_data.get('registerType'),
+            company=form_data.get('company', '')
+        )
+        response_data = {'registerMessage': "User successfully registered"}
         return JsonResponse(response_data)
     except json.JSONDecodeError as e:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)

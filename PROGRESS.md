@@ -28,6 +28,9 @@
 - created jobs form
 - created list all jobs
 
+# 16 Feb
+- implemented login
+
 
 ## To do
 - create model for jobs in backend

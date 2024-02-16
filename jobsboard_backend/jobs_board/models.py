@@ -47,3 +47,16 @@ class WorkEntry(models.Model):
     workedFrom = models.DateTimeField(default=timezone.now, blank=True)
     workedUntil = models.DateTimeField(default=timezone.now, blank=True)
     description = models.TextField()
+
+
+class User(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255, primary_key=True)
+    password = models.CharField(max_length=255)
+    # Assuming register type is either 'employee' or 'employer'
+    register_type = models.CharField(max_length=10)
+    # Allow the company field to be optional
+    company = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return self.name
