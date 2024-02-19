@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Nav, NavLink, NavMenu, Title }
     from "./NavbarElements";
 import { useNavigate } from 'react-router-dom';
@@ -8,11 +8,16 @@ import axios from 'axios';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, email }) => {
+
 
     const [logoutMessage, setLogoutMessage] = useState(null);
     const navigate = useNavigate();
     // const handleLogout = navigate('/');
+    useEffect(() => {
+        console.info('the email in navbar is:', email);
+    }, [email]);
+
     const handleLogout = async (event) => {
         event.preventDefault();
 
@@ -23,7 +28,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             if (response.data.logoutMessage === 'Logged out successfully') {
                 // setIsLoggedIn(true);
                 setIsLoggedIn(false);
-                navigate('/allresumes');
+                navigate('/');
             }
 
 
@@ -38,14 +43,14 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                     GIANT Jobs
                 </Title>
                 <NavMenu>
-                    <NavLink to="/home" activeStyle>
-                        Home
-                    </NavLink>
-                    <NavLink to="/profile" activeStyle>
-                        Profile
-                    </NavLink>
                     {isLoggedIn ? (
                         <>
+                            <NavLink to="/" activeStyle>
+                                Home
+                            </NavLink>
+                            <NavLink to="/profile" activeStyle>
+                                Profile
+                            </NavLink>
                             <NavLink to="/postjob" activeStyle>
                                 Post Job
                             </NavLink>
@@ -58,6 +63,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                         </>
                     ) : (
                         <>
+                            <NavLink to="/" activeStyle>
+                                Home
+                            </NavLink>
                             <NavLink to="/login" activeStyle>
                                 Login
                             </NavLink>

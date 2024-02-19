@@ -22,25 +22,34 @@ const AllJobs = () => {
 
     return (
         <div className="JobsContainer">
-            <h1 className='JobsH1'>All Jobs</h1>
-            <ul>
-                {jobs.map((job) => (
-                    <li className='JobUl' key={job.id}>
-                        <h2 className='JobH2'>{job.position[0].position}</h2>
-                        <h3 className='JobH3'>{job.company[0].company}</h3>
-                        <p>Level: {job.position[0].level}</p>
-                        <p>Pay: {job.position[0].pay}</p>
-                        <h3>Location</h3>
-                        <p>Country: {job.location[0].country}</p>
-                        <p>Region: {job.location[0].region}</p>
-                        <h3>Job Description</h3>
-                        <p>{job.jobDescription[0].job_description}</p>
-                        <h3>Job Requirement</h3>
-                        <p>{job.jobRequirement[0].job_requirement}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
+            <div className="pageMargin">
+                <h1>Welcome to Jobs AI, a portal for job seekers.</h1>
+                <h1 className='JobsH1'>All Jobs</h1>
+
+                {jobs && jobs.length > 0 ? (
+                    <ul>
+                        {jobs.map((job) => (
+                            <li className='JobUl' key={job.id}>
+                                <h2 className='JobH2'>{job.position}</h2>
+                                <h3 className='JobH3'>{job.company}</h3>
+                                <p>Level: {job.level}</p>
+                                <p>Pay: {job.pay}</p>
+                                <h3>Location</h3>
+                                <p>Country: {job.country}</p>
+                                <p>Region: {job.region}</p>
+                                <h3>Job Description</h3>
+                                <p>{job.job_description}</p>
+                                <h3>Job Requirement</h3>
+                                <p>{job.job_requirement}</p>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No jobs available at the moment.</p>
+                )}
+
+            </div>
+        </div >
     );
 
 };

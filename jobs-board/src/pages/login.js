@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from "react";
 import '../css/Button.css';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar/Navbar';
 import axios from 'axios';
 
 
@@ -9,9 +10,7 @@ const URL_API = 'http://localhost:8000/api/jobs_board'
 
 const Login = ({ onLogin }) => {
     const [formData, setFormData] = useState({ email: "nchinling@gmail.com", password: "84010910" });
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loginMessage, setLoginMessage] = useState(null);
-
 
     const navigate = useNavigate();
 
@@ -26,6 +25,7 @@ const Login = ({ onLogin }) => {
         try {
             const response = await axios.post(`${URL_API}/login-account`, formData);
             setLoginMessage(response.data.loginMessage);
+            console.info('Email in login:', response.data.email);
             console.log("Received back response: " + response.data.loginMessage);
             onLogin();
             if (response.data.loginMessage === 'Login successful') {
@@ -41,7 +41,6 @@ const Login = ({ onLogin }) => {
 
     return (
         <div className="container" style={{ height: '750px' }}>
-
             <form onSubmit={handleSubmit}>
 
                 <label htmlFor="email">Email:</label>

@@ -34,7 +34,7 @@
 
 # 19 Feb 
 - implemented logout
+- store job posting
 
 ## To do
-- create model for jobs in backend
-- create Google sign in
+- differentiate between employer and employee

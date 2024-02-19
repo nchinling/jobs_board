@@ -28,7 +28,7 @@ function PostJob() {
             position: "Technical Lead (Software Engineering)",
             level: "Management",
             pay: "$9000 - $12000",
-            location: "Singapore"
+            // location: "Singapore"
         },
     ]);
 
@@ -51,7 +51,7 @@ function PostJob() {
         },
     ]);
 
-    const [registerMessage, setRegisterMessage] = useState(null);
+    const [postJobMessage, setPostJobMessage] = useState(null);
 
     const handleChange = (event, entryIndex, pageIndex) => {
         const { name, value } = event.target;
@@ -111,16 +111,15 @@ function PostJob() {
 
         try {
             const response = await axios.post(`${URL_API}/create_job`, {
-                // ...formData,
                 company,
                 position,
                 location,
                 jobDescription,
                 jobRequirement
             });
-            setRegisterMessage(response.data.registerMessage);
+            setPostJobMessage(response.data.postJobMessage);
 
-            console.log("Received back response: " + response.data.registerMessage);
+            console.log("Received back response: " + response.data.postJobMessage);
         } catch (error) {
             console.error(error);
         }
@@ -133,35 +132,6 @@ function PostJob() {
     const goToPreviousPage = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
-
-    // const addEducationEntry = () => {
-    //     setEducationEntries((prevEntries) => [
-    //         ...prevEntries,
-    //         {
-    //             levelOfEducation: "",
-    //             fieldOfStudy: "",
-    //             schoolName: "",
-    //             countryOfStudy: "",
-    //             studiedFrom: null,
-    //             studiedUntil: null,
-    //         },
-    //     ]);
-    // };
-
-    // const addWorkEntry = () => {
-    //     setWorkEntries((prevEntries) => [
-    //         ...prevEntries,
-    //         {
-    //             jobTitle: "",
-    //             company: "",
-    //             countryOfWork: "Singapore",
-    //             workedFrom: null,
-    //             workedUntil: null,
-    //             description: ""
-    //         },
-    //     ]);
-    // };
-
 
     const formatLabel = (fieldName) => {
         return fieldName.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
@@ -273,15 +243,17 @@ function PostJob() {
                                                 <label htmlFor={field}>
                                                     {formatLabel(field)}:
                                                 </label>
-                                                <input
-                                                    type="text"
+                                                <textarea
+
                                                     id={field}
-                                                    // name={field}
                                                     name={`jobDescription-${field}`}
                                                     value={entry[field]}
                                                     onChange={(event) =>
                                                         handleChange(event, entryIndex, pageIndex)
                                                     }
+                                                    rows={15}
+                                                    cols={40}
+                                                    style={{ width: '100%' }} // 
                                                 />
                                                 <br />
                                             </div>
@@ -300,8 +272,8 @@ function PostJob() {
                                                 <label htmlFor={field}>
                                                     {formatLabel(field)}:
                                                 </label>
-                                                <input
-                                                    type="text"
+                                                <textarea
+
                                                     id={field}
                                                     // name={field}
                                                     name={`jobRequirement-${field}`}
@@ -309,6 +281,9 @@ function PostJob() {
                                                     onChange={(event) =>
                                                         handleChange(event, entryIndex, pageIndex)
                                                     }
+                                                    rows={15}
+                                                    cols={40}
+                                                    style={{ width: '100%' }}
                                                 />
                                                 <br />
                                             </div>
@@ -338,13 +313,13 @@ function PostJob() {
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="registerJobButton"
+                        className="registerButton"
                     >
                         Register
                     </button>
                 )}
             </form>
-            <p>{registerMessage}</p>
+            <p>{postJobMessage}</p>
         </div>
     );
 }

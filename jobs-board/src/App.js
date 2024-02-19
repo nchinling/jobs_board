@@ -26,27 +26,21 @@ function App() {
       <Routes>
         {isLoggedIn && (
           <>
-            <Route path='/' element={<Home />} />
-            <Route path='/home' element={<Home />} />
+            <Route path='/' element={<AllJobs />} />
+            <Route path='/alljobs' element={<AllJobs />} />
             <Route path='/profile' element={<Profile />} />
 
             <Route path='/allresumes' element={<AllResumes />} />
             <Route path='/postjob' element={<PostJob />} />
           </>
         )}
-        {/* <Route path='/allresumes' element={<AllResumes />} />
-        <Route path='/postjob' element={<PostJob />} /> */}
-        <Route path='/alljobs' element={<AllJobs />} />
-        <Route path='/articles' element={<Articles />} />
         {!isLoggedIn && (
           <>
-            {/* Pass handleLogin function as prop */}
+            <Route path='/' element={<AllJobs />} />
             <Route path='/login' element={<Login onLogin={handleLogin} />} />
             <Route path='/register' element={<Register />} />
           </>
         )}
-        {/* <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} /> */}
       </Routes>
     </Router>
   );

@@ -13,5 +13,9 @@ urlpatterns = [
          name='login-account'),
     path("logout-account", views.logout,
          name='logout-account'),
+    path("get_all_jobs", views.get_all_jobs,
+         name='get_all_jobs'),
+    path("create_job", views.create_job,
+         name='create_job'),
 
 ]

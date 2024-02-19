@@ -542,7 +542,7 @@ function Profile() {
                     <button
                         type="button"
                         onClick={handleSubmit}
-                        className="registerResumeButton"
+                        className="registerButton"
                     >
                         Register
                     </button>

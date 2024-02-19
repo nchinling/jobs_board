@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 import json
 import math
-from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry, User
+from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry, User, Job
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.db.models import Prefetch
@@ -17,11 +17,13 @@ def login(request):
         user = User.objects.get(email=user_email)
         password_matches = check_password(user_password, user.password)
         if password_matches:
-            response_data = {'loginMessage': "Login successful"}
+            response_data = {
+                'loginMessage': "Login successful", "email": user_email}
             return JsonResponse(response_data)
         else:
             # return JsonResponse({'loginMessage': 'Incorrect password'}, status=400)
-            response_data = {'loginMessage': "Incorrect password"}
+            response_data = {
+                'loginMessage': "Incorrect password"}
             return JsonResponse(response_data)
     except User.DoesNotExist:
         # Handle user not found
@@ -90,6 +92,44 @@ def create_user_account(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
+@csrf_exempt
+@transaction.atomic
+def create_job(request):
+    try:
+        form_data = json.loads(request.body)
+        company_data = form_data.get('company')
+        job_description_data = form_data.get('jobDescription')
+        job_requirement_data = form_data.get('jobRequirement')
+        company = company_data[0]['company']
+        job_description = job_description_data[0]['job_description']
+        print("company_data:", company_data)
+        print("parsed description", job_description)
+        position_data = form_data.get('position')
+        location_data = form_data.get('location')
+
+        # Create Job
+        job = Job.objects.create(
+            # email=form_data.get('email'),
+            company=company_data[0]['company'],
+            # Access nested data correctly
+            position=position_data[0].get('position'),
+            level=position_data[0].get('level'),
+            pay=position_data[0].get('pay'),
+            # Access nested data correctly
+            country=location_data[0].get('country'),
+            region=location_data[0].get('region'),
+            job_description=job_description_data[0]['job_description'],
+            job_requirement=job_requirement_data[0]['job_requirement']
+        )
+        response_data = {'postJobMessage': "Job successfully posted"}
+        return JsonResponse(response_data)
+    except json.JSONDecodeError as e:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        transaction.rollback(True)
+        return JsonResponse({'error': str(e)}, status=400)
+
+
 def get_resume_by_email(email):
     # Assuming email is unique in Contact model, retrieve Contact instance
     contact_instance = get_object_or_404(Contact, email=email)
@@ -121,3 +161,22 @@ def get_all_resumes(request):
     } for resume in resumes]
 
     return JsonResponse({'resumes': resume_data})
+
+
+def get_all_jobs(request):
+    jobs = Job.objects.all()
+
+    job_data = [
+        {'id': job.id,
+         'company': job.company,
+         'position': job.position,
+         'level': job.level,
+         'pay': job.pay,
+         'country': job.country,
+         'region': job.region,
+         'job_description': job.job_description,
+         'job_requirement': job.job_requirement
+
+         } for job in jobs]
+
+    return JsonResponse({'jobs': job_data})
