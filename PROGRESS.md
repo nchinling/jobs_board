@@ -32,6 +32,9 @@
 - implemented login
 
 
+# 19 Feb 
+- implemented logout
+
 ## To do
 - create model for jobs in backend
 - create Google sign in

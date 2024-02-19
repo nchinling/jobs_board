@@ -11,4 +11,7 @@ urlpatterns = [
          name='create-user-account'),
     path("login-account", views.login,
          name='login-account'),
+    path("logout-account", views.logout,
+         name='logout-account'),
+
 ]

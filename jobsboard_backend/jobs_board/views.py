@@ -30,6 +30,11 @@ def login(request):
 
 
 @csrf_exempt
+def logout(request):
+    return JsonResponse({'logoutMessage': 'Logged out successfully'})
+
+
+@csrf_exempt
 @transaction.atomic
 def create_resume(request):
     try:
