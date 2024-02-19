@@ -27,7 +27,7 @@ const Login = ({ onLogin }) => {
             setLoginMessage(response.data.loginMessage);
             console.info('Email in login:', response.data.email);
             console.log("Received back response: " + response.data.loginMessage);
-            onLogin();
+            onLogin(response.data.email);
             if (response.data.loginMessage === 'Login successful') {
                 // setIsLoggedIn(true);
                 navigate('/');
@@ -38,6 +38,7 @@ const Login = ({ onLogin }) => {
             console.error(error);
         }
     };
+
 
     return (
         <div className="container" style={{ height: '750px' }}>

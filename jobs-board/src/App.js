@@ -17,9 +17,15 @@ import AllJobs from './pages/alljobs';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const handleLogin = () => {
+  const [email, setEmail] = useState('');
+  const handleLogin = (email) => {
     setIsLoggedIn(true);
+    // setEmail(email)
+    console.log("Email in App component:", email);
   };
+
+  // console.log("Email in App component:", email);
+
   return (
     <Router>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />

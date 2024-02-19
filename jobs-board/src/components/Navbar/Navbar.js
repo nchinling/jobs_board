@@ -8,15 +8,14 @@ import axios from 'axios';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn, email }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, setEmail }) => {
 
 
     const [logoutMessage, setLogoutMessage] = useState(null);
     const navigate = useNavigate();
     // const handleLogout = navigate('/');
-    useEffect(() => {
-        console.info('the email in navbar is:', email);
-    }, [email]);
+
+    console.info('setEmail is:', setEmail)
 
     const handleLogout = async (event) => {
         event.preventDefault();
