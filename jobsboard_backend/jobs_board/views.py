@@ -1,18 +1,23 @@
 from django.http import JsonResponse
 import json
 import math
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry, User, Job
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from django.db.models import Prefetch
 from django.contrib.auth.hashers import make_password, check_password
 
+user_email = None
+
 
 @csrf_exempt
 def login(request):
+    global user_email
     try:
         form_data = json.loads(request.body)
         user_email = form_data.get('email')
+        print('The user_email in login is ', user_email)
         user_password = form_data.get('password')
         user = User.objects.get(email=user_email)
         password_matches = check_password(user_password, user.password)
@@ -130,14 +135,48 @@ def create_job(request):
         return JsonResponse({'error': str(e)}, status=400)
 
 
-def get_resume_by_email(email):
-    # Assuming email is unique in Contact model, retrieve Contact instance
-    contact_instance = get_object_or_404(Contact, email=email)
+@csrf_exempt
+def get_resume(request):
+    global user_email
+    # form_data = json.loads(request.body)
+    # email = form_data.get('email'),
+    print('The email in get resume is ', user_email)
+    try:
+        resume = Resume.objects.filter(contact__email=user_email).prefetch_related(
+            Prefetch('personalinformation_set'),
+            Prefetch('contact_set'),
+            Prefetch('address_set'),
+            Prefetch('education_set'),
+            Prefetch('workentry_set')
+        )
 
-    # Access the associated Resume through the foreign key relationship
-    resume_instance = contact_instance.resume
+        if not resume.exists():
+            print("No resume found for the email:", user_email)
+            resume_data = ''
+            return JsonResponse({'resume': resume_data})
+        else:
+            # Resumes found, continue processing
+            # Example: Print the titles of the resumes
+            print("Resume Title:", resume.title)
+    except ObjectDoesNotExist:
+        print("No matching email found in the database.")
+    except Exception as e:
+        # Handle other exceptions
+        print("An error occurred:", e)
 
-    return resume_instance
+        print(resume_data)
+
+    resume_data = [{'id': resume.id, 'title': resume.title, 'personal_information': [
+        {'firstName': pi.firstName, 'lastName': pi.lastName} for pi in resume.personalinformation_set.all()],
+        'contact': [{'email': c.email, 'phoneNumber': c.phoneNumber} for c in resume.contact_set.all()],
+        'address': [{'country': a.country, 'streetAddress': a.streetAddress, 'city': a.city, 'postCode': a.postCode} for a in resume.address_set.all()],
+        'education_entries': [{'levelOfEducation': e.levelOfEducation, 'fieldOfStudy': e.fieldOfStudy, 'schoolName': e.schoolName, 'countryOfStudy': e.countryOfStudy,
+                              'studiedFrom': e.studiedFrom, 'studiedUntil': e.studiedUntil} for e in resume.education_set.all()],
+        'work_entries': [{'jobTitle': w.jobTitle, 'company': w.company, 'countryOfWork': w.countryOfWork,
+                          'workedFrom': w.workedFrom, 'workedUntil': w.workedUntil, 'description': w.description} for w in resume.workentry_set.all()]
+    }]
+
+    return JsonResponse({'resume': resume_data})
 
 
 def get_all_resumes(request):

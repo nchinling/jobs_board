@@ -38,7 +38,7 @@
 
 # 22 Feb
 - Implemented differentiation between employer and employee
-
+- redirection to profile.
 
 ## To do
 - differentiate between employer and employee

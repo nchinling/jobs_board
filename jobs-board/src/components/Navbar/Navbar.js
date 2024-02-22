@@ -8,6 +8,11 @@ import axios from 'axios';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
+const activeStyle = {
+    fontWeight: "bold",
+    color: "red"
+};
+
 const Navbar = ({ isLoggedIn, setIsLoggedIn, isEmployer, setIsEmployer, setEmail }) => {
 
 
@@ -50,16 +55,13 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, isEmployer, setIsEmployer, setEmail
                             <NavLink to="/" activeStyle>
                                 Home
                             </NavLink>
-                            {/* <NavLink to="/profile" activeStyle>
-                                Profile
-                            </NavLink> */}
                             <NavLink to="/postjob" activeStyle>
                                 Post Job
                             </NavLink>
                             <NavLink to="/allresumes" activeStyle>
                                 All Resumes
                             </NavLink>
-                            <NavLink onClick={handleLogout}>
+                            <NavLink onClick={handleLogout} activeStyle={activeStyle}>
                                 Log out
                             </NavLink>
                         </>
@@ -71,7 +73,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, isEmployer, setIsEmployer, setEmail
                             <NavLink to="/profile" activeStyle>
                                 Profile
                             </NavLink>
-                            <NavLink onClick={handleLogout}>
+                            <NavLink onClick={handleLogout} activeStyle={activeStyle}>
                                 Log out
                             </NavLink>
                         </>

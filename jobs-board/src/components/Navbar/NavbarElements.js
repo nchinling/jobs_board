@@ -21,7 +21,8 @@ height: 100%;
 font-family: 'Monaco', sans-serif;
 cursor: pointer;
 &.active {
-	color: black;
+	font-weight: bold
+
 }
 `;
 

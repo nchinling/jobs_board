@@ -2,14 +2,13 @@ import React from 'react';
 import { useState } from "react";
 import '../css/Button.css';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar/Navbar';
 import axios from 'axios';
 
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
 const Login = ({ onLogin }) => {
-    const [formData, setFormData] = useState({ email: "nchinling@gmail.com", password: "84010910" });
+    const [formData, setFormData] = useState({ email: "ncl@gmail.com", password: "84010910" });
     const [loginMessage, setLoginMessage] = useState(null);
 
     const navigate = useNavigate();

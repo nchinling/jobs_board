@@ -7,6 +7,8 @@ urlpatterns = [
          name='create_resume'),
     path("get_all_resumes", views.get_all_resumes,
          name='get_all_resumes'),
+    path("get_resume", views.get_resume,
+         name='get_resume'),
     path("create-user-account", views.create_user_account,
          name='create-user-account'),
     path("login-account", views.login,
