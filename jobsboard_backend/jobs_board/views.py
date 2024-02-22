@@ -18,7 +18,7 @@ def login(request):
         password_matches = check_password(user_password, user.password)
         if password_matches:
             response_data = {
-                'loginMessage': "Login successful", "email": user_email}
+                'loginMessage': "Login successful", "email": user_email, "register_type": user.register_type}
             return JsonResponse(response_data)
         else:
             # return JsonResponse({'loginMessage': 'Incorrect password'}, status=400)

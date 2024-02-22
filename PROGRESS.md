@@ -36,5 +36,9 @@
 - implemented logout
 - store job posting
 
+# 22 Feb
+- Implemented differentiation between employer and employee
+
+
 ## To do
 - differentiate between employer and employee

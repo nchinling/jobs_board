@@ -8,14 +8,16 @@ import axios from 'axios';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn, setEmail }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, isEmployer, setIsEmployer, setEmail }) => {
 
 
     const [logoutMessage, setLogoutMessage] = useState(null);
     const navigate = useNavigate();
     // const handleLogout = navigate('/');
 
-    console.info('setEmail is:', setEmail)
+    // console.info('setEmail is:', setEmail)
+
+    console.info('isEmployer in Navbar is:', isEmployer)
 
     const handleLogout = async (event) => {
         event.preventDefault();
@@ -27,6 +29,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, setEmail }) => {
             if (response.data.logoutMessage === 'Logged out successfully') {
                 // setIsLoggedIn(true);
                 setIsLoggedIn(false);
+                setIsEmployer(false);
                 navigate('/');
             }
 
@@ -42,19 +45,31 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, setEmail }) => {
                     GIANT Jobs
                 </Title>
                 <NavMenu>
-                    {isLoggedIn ? (
+                    {isLoggedIn && isEmployer ? (
+                        <>
+                            <NavLink to="/" activeStyle>
+                                Home
+                            </NavLink>
+                            {/* <NavLink to="/profile" activeStyle>
+                                Profile
+                            </NavLink> */}
+                            <NavLink to="/postjob" activeStyle>
+                                Post Job
+                            </NavLink>
+                            <NavLink to="/allresumes" activeStyle>
+                                All Resumes
+                            </NavLink>
+                            <NavLink onClick={handleLogout}>
+                                Log out
+                            </NavLink>
+                        </>
+                    ) : isLoggedIn && !isEmployer ? (
                         <>
                             <NavLink to="/" activeStyle>
                                 Home
                             </NavLink>
                             <NavLink to="/profile" activeStyle>
                                 Profile
-                            </NavLink>
-                            <NavLink to="/postjob" activeStyle>
-                                Post Job
-                            </NavLink>
-                            <NavLink to="/allresumes" activeStyle>
-                                All Resumes
                             </NavLink>
                             <NavLink onClick={handleLogout}>
                                 Log out

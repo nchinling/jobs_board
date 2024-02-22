@@ -27,12 +27,12 @@ const Login = ({ onLogin }) => {
             setLoginMessage(response.data.loginMessage);
             console.info('Email in login:', response.data.email);
             console.log("Received back response: " + response.data.loginMessage);
-            onLogin(response.data.email);
+            console.info('Register type:', response.data.register_type);
+            onLogin(response.data.email, response.data.register_type);
             if (response.data.loginMessage === 'Login successful') {
                 // setIsLoggedIn(true);
                 navigate('/');
             }
-
 
         } catch (error) {
             console.error(error);
