@@ -142,13 +142,7 @@ def get_resume(request):
     # email = form_data.get('email'),
     print('The email in get resume is ', user_email)
     try:
-        resume = Resume.objects.filter(contact__email=user_email).prefetch_related(
-            Prefetch('personalinformation_set'),
-            Prefetch('contact_set'),
-            Prefetch('address_set'),
-            Prefetch('education_set'),
-            Prefetch('workentry_set')
-        )
+        resume = Resume.objects.get(contact__email=user_email)
 
         if not resume.exists():
             print("No resume found for the email:", user_email)
@@ -164,8 +158,7 @@ def get_resume(request):
         # Handle other exceptions
         print("An error occurred:", e)
 
-        print(resume_data)
-
+    print('The resume is ', resume)
     resume_data = [{'id': resume.id, 'title': resume.title, 'personal_information': [
         {'firstName': pi.firstName, 'lastName': pi.lastName} for pi in resume.personalinformation_set.all()],
         'contact': [{'email': c.email, 'phoneNumber': c.phoneNumber} for c in resume.contact_set.all()],
@@ -175,19 +168,21 @@ def get_resume(request):
         'work_entries': [{'jobTitle': w.jobTitle, 'company': w.company, 'countryOfWork': w.countryOfWork,
                           'workedFrom': w.workedFrom, 'workedUntil': w.workedUntil, 'description': w.description} for w in resume.workentry_set.all()]
     }]
+    print('the parsed resume is ', resume_data)
 
     return JsonResponse({'resume': resume_data})
 
 
 def get_all_resumes(request):
-    resumes = Resume.objects.all().prefetch_related(
-        Prefetch('personalinformation_set',
-                 queryset=PersonalInformation.objects.all()),
-        Prefetch('contact_set', queryset=Contact.objects.all()),
-        Prefetch('address_set', queryset=Address.objects.all()),
-        Prefetch('education_set', queryset=Education.objects.all()),
-        Prefetch('workentry_set', queryset=WorkEntry.objects.all())
-    )
+    # resumes = Resume.objects.all().prefetch_related(
+    #     Prefetch('personalinformation_set',
+    #              queryset=PersonalInformation.objects.all()),
+    #     Prefetch('contact_set', queryset=Contact.objects.all()),
+    #     Prefetch('address_set', queryset=Address.objects.all()),
+    #     Prefetch('education_set', queryset=Education.objects.all()),
+    #     Prefetch('workentry_set', queryset=WorkEntry.objects.all())
+    # )
+    resumes = Resume.objects.all()
 
     resume_data = [{'id': resume.id, 'title': resume.title, 'personal_information': [
         {'firstName': pi.firstName, 'lastName': pi.lastName} for pi in resume.personalinformation_set.all()],

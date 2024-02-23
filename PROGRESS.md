@@ -2,7 +2,6 @@
 - beautified login form
 - started work on resume page
 
-
 ## 2 Jan 
 - created form with progress bar
 - created readme.md
