@@ -44,34 +44,115 @@ def logout(request):
 @csrf_exempt
 @transaction.atomic
 def create_resume(request):
+    global user_email
+    form_data = json.loads(request.body)
+
     try:
-        form_data = json.loads(request.body)
+        # resume = Resume.objects.filter(contact__email=user_email)
+        resume = Resume.objects.filter(contact__email=user_email).first()
+        # if not resume.exists():
+        if not resume:
+            print('resume does not exist. creating resume')
 
-        # Create a Resume
-        resume = Resume.objects.create(
-            title=form_data.get('resumeTitle', 'Default Title'))
+            # Create a Resume
+            resume = Resume.objects.create(
+                title=form_data.get('resumeTitle', 'Default Title'))
 
-        # Save data to models
-        personal_information = PersonalInformation.objects.create(
-            resume=resume, **form_data.get('personalInformation', [])[0])
-        contact = Contact.objects.create(
-            resume=resume, **form_data.get('contact', [])[0])
-        address = Address.objects.create(
-            resume=resume, **form_data.get('address', [])[0])
+            # Save data to models
+            personal_information = PersonalInformation.objects.create(
+                resume=resume, **form_data.get('personalInformation', [])[0])
+            contact = Contact.objects.create(
+                resume=resume, **form_data.get('contact', [])[0])
+            address = Address.objects.create(
+                resume=resume, **form_data.get('address', [])[0])
 
-        for education_entry in form_data.get('educationEntries', []):
-            Education.objects.create(resume=resume, **education_entry)
+            for education_entry in form_data.get('educationEntries', []):
+                Education.objects.create(resume=resume, **education_entry)
 
-        for work_entry in form_data.get('workEntries', []):
-            WorkEntry.objects.create(resume=resume, **work_entry)
+            for work_entry in form_data.get('workEntries', []):
+                WorkEntry.objects.create(resume=resume, **work_entry)
 
-        response_data = {'registerMessage': "Resume successfully created"}
-        return JsonResponse(response_data)
+            response_data = {'registerMessage': "Resume successfully created"}
+            return JsonResponse(response_data)
+
+        else:
+            print('resume exist. updating resume')
+            resume.title = form_data.get('resumeTitle', 'Default Title')
+            resume.save()
+
+            # Update PersonalInformation
+            personal_info_data = form_data.get('personalInformation', [])[0]
+            personal_information = resume.personalinformation
+            for key, value in personal_info_data.items():
+                setattr(personal_information, key, value)
+            personal_information.save()
+
+            # Update Contact
+            contact_data = form_data.get('contact', [])[0]
+            contact = resume.contact
+            for key, value in contact_data.items():
+                setattr(contact, key, value)
+            contact.save()
+
+            # Update Address
+            address_data = form_data.get('address', [])[0]
+            address = resume.address
+            for key, value in address_data.items():
+                setattr(address, key, value)
+            address.save()
+
+            # Update EducationEntries
+            # Remove existing entries
+            Education.objects.filter(resume=resume).delete()
+            for education_entry in form_data.get('educationEntries', []):
+                Education.objects.create(resume=resume, **education_entry)
+
+            # Update WorkEntries
+            # Remove existing entries
+            WorkEntry.objects.filter(resume=resume).delete()
+            for work_entry in form_data.get('workEntries', []):
+                WorkEntry.objects.create(resume=resume, **work_entry)
+
+            response_data = {'registerMessage': "Resume successfully updated"}
+            return JsonResponse(response_data)
     except json.JSONDecodeError as e:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     except Exception as e:
         transaction.rollback(True)
         return JsonResponse({'error': str(e)}, status=400)
+
+
+# @csrf_exempt
+# @transaction.atomic
+# def create_resume(request):
+#     try:
+#         form_data = json.loads(request.body)
+
+#         # Create a Resume
+#         resume = Resume.objects.create(
+#             title=form_data.get('resumeTitle', 'Default Title'))
+
+#         # Save data to models
+#         personal_information = PersonalInformation.objects.create(
+#             resume=resume, **form_data.get('personalInformation', [])[0])
+#         contact = Contact.objects.create(
+#             resume=resume, **form_data.get('contact', [])[0])
+#         address = Address.objects.create(
+#             resume=resume, **form_data.get('address', [])[0])
+
+#         for education_entry in form_data.get('educationEntries', []):
+#             Education.objects.create(resume=resume, **education_entry)
+
+#         for work_entry in form_data.get('workEntries', []):
+#             WorkEntry.objects.create(resume=resume, **work_entry)
+
+#         response_data = {'registerMessage': "Resume successfully created"}
+#         return JsonResponse(response_data)
+#     except json.JSONDecodeError as e:
+#         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+#     except Exception as e:
+#         transaction.rollback(True)
+#         return JsonResponse({'error': str(e)}, status=400)
 
 
 @csrf_exempt

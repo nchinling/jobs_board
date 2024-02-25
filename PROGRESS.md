@@ -48,6 +48,7 @@
 # 25 Feb
 - sent resume data to create profile
 - populated resume data in most fields for edit
+- fixed date edit issue
 
 ## To do
 - differentiate between employer and employee

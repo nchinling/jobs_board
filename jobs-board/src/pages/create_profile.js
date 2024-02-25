@@ -20,10 +20,28 @@ function CreateProfile() {
             setPersonalInformation(resumeData[0].personal_information);
             setContact(resumeData[0].contact);
             setAddress(resumeData[0].address);
-            setEducationEntries(resumeData[0].education_entries);
-            setWorkEntries(resumeData[0].work_entries);
+            // setEducationEntries(resumeData[0].education_entries);
+            setEducationEntries(resumeData[0].education_entries.map(entry => ({
+                ...entry,
+                studiedFrom: new Date(entry.studiedFrom),
+                studiedUntil: new Date(entry.studiedUntil)
+                // workedFrom: new Date(),
+                // workedUntil: new Date()
+            })));
+            // setWorkEntries(resumeData[0].work_entries);
+            setWorkEntries(resumeData[0].work_entries.map(entry => ({
+                ...entry,
+                workedFrom: new Date(entry.workedFrom),
+                workedUntil: new Date(entry.workedUntil)
+            })))
         }
     }, [resumeData]);
+
+    // const parsedWorkEntries = workEntries.map(entry => ({
+    //     ...entry,
+    //     workedFrom: new Date(entry.workedFrom),
+    //     workedUntil: new Date(entry.workedUntil)
+    // }));
 
 
     const pages = [
@@ -200,8 +218,8 @@ function CreateProfile() {
                 fieldOfStudy: "",
                 schoolName: "",
                 countryOfStudy: "",
-                studiedFrom: null,
-                studiedUntil: null,
+                studiedFrom: "",
+                studiedUntil: "",
             },
         ]);
     };
@@ -213,8 +231,8 @@ function CreateProfile() {
                 jobTitle: "",
                 company: "",
                 countryOfWork: "Singapore",
-                workedFrom: null,
-                workedUntil: null,
+                workedFrom: "",
+                workedUntil: "",
                 description: ""
             },
         ]);
@@ -336,14 +354,14 @@ function CreateProfile() {
                                                     <label htmlFor={field}>
                                                         {formatLabel(field)}:
                                                     </label>
-                                                    {/* <DatePicker
+                                                    <DatePicker
                                                         selected={entry[field]}
                                                         onChange={(date) =>
                                                             handleEducationDateChange(date, field, entryIndex)
                                                         }
                                                         dateFormat="MMM yyyy"
                                                         showMonthYearPicker
-                                                    /> */}
+                                                    />
                                                 </div>
                                             ) : (
                                                 <div>
@@ -379,14 +397,14 @@ function CreateProfile() {
                                                     <label htmlFor={field}>
                                                         {formatLabel(field)}:
                                                     </label>
-                                                    {/* <DatePicker
+                                                    <DatePicker
                                                         selected={entry[field]}
                                                         onChange={(date) =>
                                                             handleWorkDateChange(date, field, entryIndex)
                                                         }
                                                         dateFormat="MMM yyyy"
                                                         showMonthYearPicker
-                                                    /> */}
+                                                    />
                                                 </div>
                                             ) : field === "description" ? (
                                                 <div>
