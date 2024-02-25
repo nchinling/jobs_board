@@ -1,6 +1,6 @@
 from django.http import JsonResponse
+from django.middleware.csrf import get_token
 import json
-import math
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Address, Contact, Education, PersonalInformation, Resume, WorkEntry, User, Job
 from django.views.decorators.csrf import csrf_exempt
@@ -214,3 +214,13 @@ def get_all_jobs(request):
          } for job in jobs]
 
     return JsonResponse({'jobs': job_data})
+
+
+# def return_csrf_token(request):
+#     csrf_token = get_token(request)
+
+#     response_data = {
+#         "csrf_token": csrf_token
+#     }
+
+#     return JsonResponse(response_data)

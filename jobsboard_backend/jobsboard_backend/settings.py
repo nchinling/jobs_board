@@ -47,6 +47,9 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
+    'X-CSRFToken',
+    'Accept',
+    'Accept-Encoding',
     # Add other headers as needed
 ]
 

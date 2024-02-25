@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../css/Page.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const URL_API = 'http://localhost:8000/api/jobs_board'
 
@@ -40,6 +40,10 @@ const Profile = ({ email }) => {
     useEffect(() => {
         console.info('ResumeData has value of ', resumeData);
     }, [resumeData]);
+
+    const handleEdit = () => {
+        navigate('/create_profile', { state: { resumeData } });
+    };
     return (
         <div className="pageMargin">
             <h1>This is my profile page</h1>
@@ -83,6 +87,12 @@ const Profile = ({ email }) => {
                             </li>
                         ))}
                     </ul>
+
+
+                    {/* <Link to={`/create_profile?resumeData=${encodeURIComponent(JSON.stringify(resumeData))}`}>
+                        <button>Edit</button>
+                    </Link> */}
+                    <button onClick={handleEdit}>Edit</button>
                 </div>
             )}
         </div>

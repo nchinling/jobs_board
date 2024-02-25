@@ -1,30 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '../css/Page.css';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
-
 
 const URL_API = 'http://localhost:8000/api/jobs_board';
 
 function CreateProfile() {
     const [currentPage, setCurrentPage] = useState(1);
-
-    const location = useLocation();
-    const { resumeData } = location.state;
-
-    useEffect(() => {
-        console.log('resumeData:', resumeData);
-        if (resumeData) {
-            setPersonalInformation(resumeData[0].personal_information);
-            setContact(resumeData[0].contact);
-            setAddress(resumeData[0].address);
-            setEducationEntries(resumeData[0].education_entries);
-            setWorkEntries(resumeData[0].work_entries);
-        }
-    }, [resumeData]);
-
 
     const pages = [
         { fields: ['firstName', 'lastName'], label: 'Personal Information' },
@@ -44,34 +27,34 @@ function CreateProfile() {
 
     const [personalInformation, setPersonalInformation] = useState([
         {
-            firstName: "",
-            lastName: "",
+            firstName: "Chin Lingz",
+            lastName: "Ng",
         },
     ]);
 
 
     const [contact, setContact] = useState([
         {
-            email: "",
-            phoneNumber: "",
+            email: "nchinling@gmail.com",
+            phoneNumber: "94892015",
         },
     ]);
 
     const [address, setAddress] = useState([
         {
-            country: "",
-            streetAddress: "",
-            city: "",
-            postCode: "",
+            country: "Singapore",
+            streetAddress: "86 Dawson Road",
+            city: "Singapore",
+            postCode: "141086",
         },
     ]);
 
     const [educationEntries, setEducationEntries] = useState([
         {
-            levelOfEducation: "",
-            fieldOfStudy: "",
-            schoolName: "",
-            countryOfStudy: "",
+            levelOfEducation: "Masters",
+            fieldOfStudy: "Engineering",
+            schoolName: "Harvard",
+            countryOfStudy: "USA",
             studiedFrom: null,
             studiedUntil: null,
         },
@@ -79,17 +62,62 @@ function CreateProfile() {
 
     const [workEntries, setWorkEntries] = useState([
         {
-            jobTitle: "",
-            company: "",
-            countryOfWork: "",
+            jobTitle: "Lead Architect",
+            company: "Google",
+            countryOfWork: "Singapore",
             workedFrom: null,
             workedUntil: null,
-            description: ""
+            description: "Program"
         },
     ]);
 
     const [registerMessage, setRegisterMessage] = useState(null);
 
+    // const handleChange = (event, entryIndex, fieldIndex) => {
+    //     const { name, value } = event.target;
+    //     // const updatedFormData = [...formData];
+    //     // updatedFormData[entryIndex] = {
+    //     //     ...updatedFormData[entryIndex],
+    //     //     [name]: value,
+    //     // };
+    //     // setFormData(updatedFormData);
+
+    //     const updatedAddress = [...address];
+    //     updatedAddress[entryIndex] = {
+    //         ...updatedAddress[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setAddress(updatedAddress);
+
+    //     const updatedContact = [...contact];
+    //     updatedContact[entryIndex] = {
+    //         ...updatedContact[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setContact(updatedContact);
+
+    //     const updatedPersonalInformation = [...personalInformation];
+    //     updatedPersonalInformation[entryIndex] = {
+    //         ...updatedPersonalInformation[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setPersonalInformation(updatedPersonalInformation);
+
+
+    //     const updatedEducationEntries = [...educationEntries];
+    //     updatedEducationEntries[entryIndex] = {
+    //         ...updatedEducationEntries[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setEducationEntries(updatedEducationEntries);
+
+    //     const updatedWorkEntries = [...workEntries];
+    //     updatedWorkEntries[entryIndex] = {
+    //         ...updatedWorkEntries[entryIndex],
+    //         [name]: value,
+    //     };
+    //     setWorkEntries(updatedWorkEntries);
+    // };
 
     const handleChange = (event, entryIndex, pageIndex) => {
         const { name, value } = event.target;
@@ -336,14 +364,14 @@ function CreateProfile() {
                                                     <label htmlFor={field}>
                                                         {formatLabel(field)}:
                                                     </label>
-                                                    {/* <DatePicker
+                                                    <DatePicker
                                                         selected={entry[field]}
                                                         onChange={(date) =>
                                                             handleEducationDateChange(date, field, entryIndex)
                                                         }
                                                         dateFormat="MMM yyyy"
                                                         showMonthYearPicker
-                                                    /> */}
+                                                    />
                                                 </div>
                                             ) : (
                                                 <div>
@@ -379,14 +407,14 @@ function CreateProfile() {
                                                     <label htmlFor={field}>
                                                         {formatLabel(field)}:
                                                     </label>
-                                                    {/* <DatePicker
+                                                    <DatePicker
                                                         selected={entry[field]}
                                                         onChange={(date) =>
                                                             handleWorkDateChange(date, field, entryIndex)
                                                         }
                                                         dateFormat="MMM yyyy"
                                                         showMonthYearPicker
-                                                    /> */}
+                                                    />
                                                 </div>
                                             ) : field === "description" ? (
                                                 <div>
@@ -425,6 +453,48 @@ function CreateProfile() {
                                 </div>
                             ))}
 
+                            {/* {page.label === "Add Work Experience" && workEntries.map((entry, entryIndex) => (
+                                <div key={`${pageIndex}-${entryIndex}`}>
+                                    <h3>Work{entryIndex + 1}</h3>
+
+                                    {page.fields.map((field) => (
+                                        <div key={field}>
+                                            {field === "workedFrom" || field === "workedUntil" ? (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <DatePicker
+                                                        selected={entry[field]}
+                                                        onChange={(date) =>
+                                                            handleWorkDateChange(date, field, entryIndex)
+                                                        }
+                                                        dateFormat="MMM yyyy"
+                                                        showMonthYearPicker
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <label htmlFor={field}>
+                                                        {formatLabel(field)}:
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        id={field}
+                                                        // name={field}
+                                                        name={`workEntries-${field}`}
+                                                        value={entry[field]}
+                                                        onChange={(event) =>
+                                                            handleChange(event, entryIndex, pageIndex)
+                                                        }
+                                                    />
+                                                    <br />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            ))} */}
                             {page.label === "Add Education" && (
                                 <button
                                     type="button"

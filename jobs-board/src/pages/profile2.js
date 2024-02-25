@@ -1,138 +1,98 @@
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { useEffect, useState } from 'react';
 import '../css/Page.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const URL_API = 'http://localhost:8000/api/jobs_board';
+const URL_API = 'http://localhost:8000/api/jobs_board'
 
-function Profile() {
-    const [currentPage, setCurrentPage] = useState(1);
+const Profile = ({ email }) => {
+    console.info('The email in Profile is ', email)
+    const navigate = useNavigate();
 
-    const pages = [
-        { fields: ['firstName', 'lastName'], label: 'Personal Information' },
-        { fields: ['email', 'phoneNumber'], label: 'Contact' },
-        { fields: ['country', 'streetAddress', 'city', 'postCode'], label: 'Where are you located?' },
-        {
-            fields: ['levelOfEducation', 'fieldOfStudy', 'schoolName', 'country', 'fromDate', 'toDate'],
-            label: 'Add Education'
-        },
-        { fields: ['occupation'], label: 'Occupation' },
-    ];
+    const [resumeData, setResumeData] = useState();
 
-    const [formData, setFormData] = useState({
-        firstName: "Chin Ling",
-        lastName: "Ng",
-        email: "nchinling@gmail.com",
-        phoneNumber: "94892015",
-        country: "Singapore",
-        streetAddress: "86 Dawson Road",
-        city: "Singapore",
-        postCode: "141086",
-        levelOfEducation: "",
-        fieldOfStudy: "",
-        schoolName: "",
-        fromDate: null,
-        toDate: null,
-        occupation: "Software engineer",
-    });
+    useEffect(() => {
 
-    const [registerMessage, setRegisterMessage] = useState(null);
+        const fetchResume = async () => {
+            try {
+                const response = await axios.get(`${URL_API}/get_resume`, {
+                    email
+                });
+                console.info('the resume received is ', response.data.resume)
+                setResumeData(response.data.resume);
+                if (response.data.resume === '') {
+                    // Redirect to /create_profile
+                    navigate('/create_profile');
+                } else {
+                    // Set resume data
+                    console.info('I am inside else')
+                    setResumeData(response.data.resume);
+                    console.info('ResumeData has value of ', resumeData)
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+        fetchResume();
+    }, [email]);
+
+    useEffect(() => {
+        console.info('ResumeData has value of ', resumeData);
+    }, [resumeData]);
+
+    const handleEdit = () => {
+        navigate('/edit_profile');
     };
-
-    const handleDateChange = (date, fieldName) => {
-        setFormData((prevFormData) => ({ ...prevFormData, [fieldName]: date }));
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        try {
-            const response = await axios.post(`${URL_API}/create-user-account`, formData);
-            setRegisterMessage(response.data.registerMessage);
-
-            console.log("Received back response: " + response.data.registerMessage);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const goToNextPage = () => {
-        setCurrentPage((prevPage) => Math.min(prevPage + 1, pages.length));
-    };
-
-    const goToPreviousPage = () => {
-        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-    };
-
-    const formatLabel = (fieldName) => {
-        return fieldName.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase());
-    };
-
     return (
-        <div className="container" style={{ height: '750px' }}>
-            <div className="page-header">
-                <h3>Page {currentPage} of {pages.length}</h3>
-                <div className="progress-bar">
-                    <div className="progress" style={{ width: `${(currentPage / pages.length) * 100}%` }}></div>
+        <div className="pageMargin">
+            <h1>This is my profile page</h1>
+            <button onClick={handleEdit}>Edit Profile</button> {/* Edit button */}
+            {resumeData && resumeData.length > 0 && (
+                <div className='ResumeContainer'>
+                    <h2 className='ResumeH2'>Resume {resumeData[0].id}</h2>
+                    <h3 className='ResumeH3'>Name</h3>
+                    <p className='ResumeP'>First Name: {resumeData[0].personal_information[0].firstName}</p>
+                    <p>Last Name: {resumeData[0].personal_information[0].lastName}</p>
+                    <h3>Contact</h3>
+                    <p>Email: {resumeData[0].contact[0].email}</p>
+                    <p>Phone Number: {resumeData[0].contact[0].phoneNumber}</p>
+                    <h3>Address</h3>
+                    <p>Street Address: {resumeData[0].address[0].streetAddress}</p>
+                    <p>City: {resumeData[0].address[0].city}</p>
+                    <p>Post Code: {resumeData[0].address[0].postCode}</p>
+                    <p>Country: {resumeData[0].address[0].country}</p>
+                    <h3>Education</h3>
+                    <ul>
+                        {resumeData[0].education_entries.map((education) => (
+                            <li className='ResumeLi' key={education.id}>
+                                <p>Level of Education: {education.levelOfEducation}</p>
+                                <p>Field of Study: {education.fieldOfStudy}</p>
+                                <p>School Name: {education.schoolName}</p>
+                                <p>Country of Study: {education.countryOfStudy}</p>
+                                <p>Studied From: {education.studiedFrom}</p>
+                                <p>Studied Until: {education.studiedUntil}</p>
+                            </li>
+                        ))}
+                    </ul>
+                    <h3>Work Experience</h3>
+                    <ul>
+                        {resumeData[0].work_entries.map((workEntry) => (
+                            <li className='ResumeLi' key={workEntry.id}>
+                                <p>Job Title: {workEntry.jobTitle}</p>
+                                <p>Company: {workEntry.company}</p>
+                                <p>Country of Work: {workEntry.countryOfWork}</p>
+                                <p>Worked From: {workEntry.workedFrom}</p>
+                                <p>Worked Until: {workEntry.workedUntil}</p>
+                                <p>Description: {workEntry.description}</p>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            </div>
-
-            <form>
-                {pages.map((page, index) => (
-                    index + 1 === currentPage && (
-                        <div key={index}>
-                            <h2>{page.label}</h2>
-                            {page.fields.map((field) => (
-                                <div key={field}>
-                                    {field === 'fromDate' || field === 'toDate' ? (
-                                        <div>
-                                            <label htmlFor={field}>{formatLabel(field)}:</label>
-                                            <DatePicker
-                                                selected={formData[field]}
-                                                onChange={(date) => handleDateChange(date, field)}
-                                                dateFormat="MM/yyyy"
-                                                showMonthYearPicker
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            <label htmlFor={field}>{formatLabel(field)}:</label>
-                                            <input
-                                                type="text"
-                                                id={field}
-                                                name={field}
-                                                value={formData[field]}
-                                                onChange={handleChange}
-                                            /><br />
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    )
-                ))}
-
-                <button type="button" onClick={goToPreviousPage} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                {currentPage < pages.length ? (
-                    <button type="button" onClick={goToNextPage}>
-                        Next
-                    </button>
-                ) : (
-                    <button type="button" onClick={handleSubmit} id="registerButton">
-                        Register
-                    </button>
-                )}
-            </form>
-            <p>{registerMessage}</p>
+            )}
         </div>
     );
-}
+
+};
 
 export default Profile;

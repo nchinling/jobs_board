@@ -39,5 +39,15 @@
 - Implemented differentiation between employer and employee
 - redirection to profile.
 
+# 23 Feb
+- displayed personal resume
+
+# 24 Feb
+- work on resume edit
+
+# 25 Feb
+- sent resume data to create profile
+- populated resume data in most fields for edit
+
 ## To do
 - differentiate between employer and employee
